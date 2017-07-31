@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Ross Hadden",
+      "authorEmail": "rosshadden@gmail.com",
+      "authorUrl": "http://github.com/rosshadden"
+    }
+  }
+}
