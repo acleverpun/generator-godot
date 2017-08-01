@@ -54,7 +54,7 @@ module.exports = class extends Generator {
 		for (const file of this.templateFiles) {
 			this.fs.copyTpl(
 				this.templatePath(ns, file),
-				this.destinationPath(file.slice(1)),
+				this.destinationPath(fixTemplatePath(file)),
 				this.ctx
 			);
 		}
@@ -68,6 +68,12 @@ module.exports = class extends Generator {
 	}
 };
 
-function makeRelative(filePath, templatePath) {
-	return filePath.replace(`${templatePath}/`, '');
+function fixTemplatePath(file) {
+	const parts = file.split('/');
+	parts[parts.length - 1] = _.last(parts).slice(1);
+	return parts.join('/');
+}
+
+function makeRelative(file, templatePath) {
+	return file.replace(`${templatePath}/`, '');
 }
