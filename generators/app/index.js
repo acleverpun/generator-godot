@@ -6,13 +6,6 @@ const path = require('path');
 const pkg = require('../../package.json');
 const yosay = require('yosay');
 
-const templateFiles = {
-	core: [
-		'project.godot'
-	],
-	nim: []
-};
-
 module.exports = class extends Generator {
 	init() {
 		this.ctx = {};
@@ -45,7 +38,8 @@ module.exports = class extends Generator {
 
 		this.allFiles = glob.sync(this.templatePath(ns, '**'), { dot: true, nodir: true })
 			.map((file) => makeRelative(file, templatePath));
-		this.templateFiles = templateFiles[ns].map((file) => makeRelative(file, templatePath));
+		this.templateFiles = glob.sync(this.templatePath(ns, '**/_*'), { nodir: true })
+			.map((file) => makeRelative(file, templatePath));
 		this.staticFiles = _.difference(this.allFiles, this.templateFiles);
 	}
 
@@ -60,7 +54,7 @@ module.exports = class extends Generator {
 		for (const file of this.templateFiles) {
 			this.fs.copyTpl(
 				this.templatePath(ns, file),
-				this.destinationPath(file),
+				this.destinationPath(file.slice(1)),
 				this.ctx
 			);
 		}
