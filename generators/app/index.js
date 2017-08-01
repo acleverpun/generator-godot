@@ -3,7 +3,15 @@ const _ = require('lodash');
 const chalk = require('chalk');
 const glob = require('glob');
 const path = require('path');
+const pkg = require('../../package.json');
 const yosay = require('yosay');
+
+const templateFiles = {
+	core: [
+		'project.godot'
+	],
+	nim: []
+};
 
 module.exports = class extends Generator {
 	init() {
@@ -11,47 +19,57 @@ module.exports = class extends Generator {
 	}
 
 	greet() {
-		this.log(yosay(`Welcome to the wonderful ${chalk.red('generator-godot')} generator!`));
+		this.log(yosay(`Welcome to the ${chalk.red(pkg.name)} generator!`));
 	}
 
-	paths() {
-		const templatePath = this.templatePath();
-
-		this.templateFiles = [
-			'project.godot'
-		].map((file) => makeRelative(file, templatePath));
-
-		this.allFiles = glob.sync(this.templatePath('**'), { dot: true })
-			.slice(1)
-			.map((file) => makeRelative(file, templatePath));
-		this.staticFiles = _.difference(this.allFiles, this.templateFiles);
-	}
 
 	async ask() {
-		const answers = await this.prompt({
+		const answers = await this.prompt([ {
 			name: 'name',
 			type: 'input',
 			message: 'Project name?',
 			default: path.basename(process.cwd())
-		});
+		}, {
+			name: 'modules',
+			type: 'checkbox',
+			message: 'Modules?',
+			choices: [ 'nim' ],
+			store: true
+		} ]);
 
 		_.assign(this.ctx, answers);
 	}
 
-	write() {
+	paths(ns = 'core') {
+		const templatePath = this.templatePath(ns);
+
+		this.allFiles = glob.sync(this.templatePath(ns, '**'), { dot: true, nodir: true })
+			.map((file) => makeRelative(file, templatePath));
+		this.templateFiles = templateFiles[ns].map((file) => makeRelative(file, templatePath));
+		this.staticFiles = _.difference(this.allFiles, this.templateFiles);
+	}
+
+	write(ns = 'core') {
 		for (const file of this.staticFiles) {
 			this.fs.copy(
-				this.templatePath(file),
+				this.templatePath(ns, file),
 				this.destinationPath(file)
 			);
 		}
 
 		for (const file of this.templateFiles) {
 			this.fs.copyTpl(
-				this.templatePath(file),
+				this.templatePath(ns, file),
 				this.destinationPath(file),
 				this.ctx
 			);
+		}
+	}
+
+	modules() {
+		for (const module of this.ctx.modules) {
+			this.paths(module);
+			this.write(module);
 		}
 	}
 };
