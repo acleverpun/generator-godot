@@ -2,24 +2,40 @@ const Generator = require('yeoman-generator');
 const _ = require('lodash');
 const chalk = require('chalk');
 const glob = require('glob');
+const path = require('path');
 const yosay = require('yosay');
 
 module.exports = class extends Generator {
+	init() {
+		this.ctx = {};
+	}
+
 	greet() {
 		this.log(yosay(`Welcome to the wonderful ${chalk.red('generator-godot')} generator!`));
 	}
 
-	setup() {
+	paths() {
 		const templatePath = this.templatePath();
 
 		this.templateFiles = [
-			'project/project.godot'
+			'project.godot'
 		].map((file) => makeRelative(file, templatePath));
 
 		this.allFiles = glob.sync(this.templatePath('**'), { dot: true })
 			.slice(1)
 			.map((file) => makeRelative(file, templatePath));
 		this.staticFiles = _.difference(this.allFiles, this.templateFiles);
+	}
+
+	async ask() {
+		const answers = await this.prompt({
+			name: 'name',
+			type: 'input',
+			message: 'Project name?',
+			default: path.basename(process.cwd())
+		});
+
+		_.assign(this.ctx, answers);
 	}
 
 	write() {
@@ -34,12 +50,12 @@ module.exports = class extends Generator {
 			this.fs.copyTpl(
 				this.templatePath(file),
 				this.destinationPath(file),
-				{ title: 'foo' }
+				this.ctx
 			);
 		}
 	}
 };
 
-function makeRelative(path, templatePath) {
-	return path.replace(`${templatePath}/`, '');
+function makeRelative(filePath, templatePath) {
+	return filePath.replace(`${templatePath}/`, '');
 }
