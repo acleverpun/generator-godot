@@ -1,31 +1,45 @@
 const Generator = require('yeoman-generator');
+const _ = require('lodash');
 const chalk = require('chalk');
+const glob = require('glob');
 const yosay = require('yosay');
 
 module.exports = class extends Generator {
-	prompting() {
-		// Have Yeoman greet the user.
-		this.log(yosay(
-			'Welcome to the wonderful ' + chalk.red('generator-godot') + ' generator!'
-		));
-
-		const prompts = [{
-			type: 'confirm',
-			name: 'someAnswer',
-			message: 'Would you like to enable this option?',
-			default: true
-		}];
-
-		return this.prompt(prompts).then(props => {
-			// To access props later use this.props.someAnswer;
-			this.props = props;
-		});
+	greet() {
+		this.log(yosay(`Welcome to the wonderful ${chalk.red('generator-godot')} generator!`));
 	}
 
-	writing() {
-		this.fs.copy(
-			this.templatePath('_editorconfig'),
-			this.destinationPath('.editorconfig')
-		);
+	setup() {
+		const templatePath = this.templatePath();
+
+		this.templateFiles = [
+			'project/project.godot'
+		].map((file) => makeRelative(file, templatePath));
+
+		this.allFiles = glob.sync(this.templatePath('**'), { dot: true })
+			.slice(1)
+			.map((file) => makeRelative(file, templatePath));
+		this.staticFiles = _.difference(this.allFiles, this.templateFiles);
+	}
+
+	write() {
+		for (const file of this.staticFiles) {
+			this.fs.copy(
+				this.templatePath(file),
+				this.destinationPath(file)
+			);
+		}
+
+		for (const file of this.templateFiles) {
+			this.fs.copyTpl(
+				this.templatePath(file),
+				this.destinationPath(file),
+				{ title: 'foo' }
+			);
+		}
 	}
 };
+
+function makeRelative(path, templatePath) {
+	return path.replace(`${templatePath}/`, '');
+}

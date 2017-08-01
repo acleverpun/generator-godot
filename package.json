@@ -19,7 +19,7 @@
   ],
   "devDependencies": {
     "eslint": "^4.1.0",
-    "eslint-config-xo": "^0.18.2",
+    "eslint-config-zipscene": "^0.2.3",
     "jest": "^19.0.2",
     "jest-cli": "^20.0.0",
     "nsp": "^2.6.3",
@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "chalk": "^1.1.3",
+    "glob": "^7.1.2",
+    "lodash": "^4.17.4",
     "yeoman-generator": "^1.0.0",
     "yosay": "^2.0.0"
   },
@@ -40,11 +42,7 @@
     "test": "jest"
   },
   "eslintConfig": {
-    "extends": "xo",
-    "env": {
-      "jest": true,
-      "node": true
-    }
+    "extends": "zipscene/environments/node"
   },
   "repository": "rosshadden/generator-godot",
   "license": "MIT"
