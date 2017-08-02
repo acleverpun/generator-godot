@@ -21,15 +21,35 @@ module.exports = class extends Yodot {
 			type: 'input',
 			message: 'Root node type?',
 			default: 'Node2D'
+		}, {
+			name: 'main',
+			type: 'confirm',
+			message: 'Make main scene?',
+			default: false
 		} ]);
 		_.assign(this.ctx, answers);
 	}
 
 	main() {
+		const sceneName = `scenes/${this.ctx.name}.tscn`;
+
 		super.main({
-			mappings: {
-				'scenes/scene.tscn': `scenes/${this.ctx.name}.tscn`
-			}
+			mappings: { 'scenes/scene.tscn': sceneName }
 		});
+
+		// Register as main scene
+		if (this.ctx.main) {
+			const file = this.destinationPath('project.godot');
+			const setting = `run/main_scene="res://${sceneName}"`;
+
+			let lines = this.fs.read(file).split('\n');
+			lines = lines.map((line, l) => {
+				if (/^config\/name=/.test(line)) lines.splice(l + 1, 0, setting);
+				return line;
+			});
+			lines.push('');
+
+			this.fs.write(file, lines.join('\n'));
+		}
 	}
 };

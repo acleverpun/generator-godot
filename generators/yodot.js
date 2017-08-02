@@ -27,8 +27,8 @@ module.exports = class extends Generator {
 			this.manifest[ns].push(file);
 
 			if (ns !== 'core' && this.manifest.core.includes(file)) {
-				const content = this.fs.read(this.templatePath(ns, file));
-				this.fs.append(this.destinationPath(file), content);
+				const body = this.fs.read(this.templatePath(ns, file));
+				this.fs.append(this.destinationPath(file), body);
 				continue;
 			}
 
@@ -46,8 +46,8 @@ module.exports = class extends Generator {
 			this.manifest[ns].push(fixedFile);
 
 			if (ns !== 'core' && this.manifest.core.includes(fixedFile)) {
-				const content = this.fs.read(this.templatePath(ns, file));
-				this.fs.append(this.destinationPath(fixedFile), _.template(content)(this.ctx));
+				const body = this.fs.read(this.templatePath(ns, file));
+				this.fs.append(this.destinationPath(fixedFile), _.template(body)(this.ctx));
 				continue;
 			}
 
