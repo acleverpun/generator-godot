@@ -33,6 +33,8 @@ module.exports = class extends Yodot {
 			ns,
 			mappings: {
 				'scripts/script.gd': `scripts/${this.ctx.name}.gd`,
+				'scripts/script.gdns': `scripts/${this.ctx.name}.gdns`,
+				'src/script.nim': `src/${this.ctx.name}.nim`
 			}
 		});
 	}
