@@ -43,10 +43,19 @@ module.exports = class extends Yodot {
 			const setting = `run/main_scene="res://${sceneName}"`;
 
 			let lines = this.fs.read(file).split('\n');
-			lines = lines.map((line, l) => {
-				if (/^config\/name=/.test(line)) lines.splice(l + 1, 0, setting);
-				return line;
-			});
+			for (let l = 0; l <= lines.length; l++) {
+				let line = lines[l];
+				// Update setting if already present
+				if (/^run\/main_scene=/.test(line)) {
+					lines[l] = setting;
+					break;
+				}
+				// Add setting if not already present
+				if (/^config\/icon=/.test(line)) {
+					lines.splice(l, 0, setting);
+					break;
+				}
+			}
 			lines.push('');
 
 			this.fs.write(file, lines.join('\n'));
