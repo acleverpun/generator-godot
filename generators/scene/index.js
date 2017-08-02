@@ -31,18 +31,18 @@ module.exports = class extends Yodot {
 	}
 
 	main() {
-		const sceneName = `scenes/${this.ctx.name}.tscn`;
+		const file = `scenes/${this.ctx.name}.tscn`;
 
 		super.main({
-			mappings: { 'scenes/scene.tscn': sceneName }
+			mappings: { 'scenes/scene.tscn': file }
 		});
 
 		// Register as main scene
 		if (this.ctx.main) {
-			const file = this.destinationPath('project.godot');
-			const setting = `run/main_scene="res://${sceneName}"`;
+			const projectFile = this.destinationPath('project.godot');
+			const setting = `run/main_scene="res://${file}"`;
 
-			let lines = this.fs.read(file).split('\n');
+			let lines = this.fs.read(projectFile).split('\n');
 			for (let l = 0; l <= lines.length; l++) {
 				let line = lines[l];
 				// Update setting if already present
@@ -58,7 +58,7 @@ module.exports = class extends Yodot {
 			}
 			lines.push('');
 
-			this.fs.write(file, lines.join('\n'));
+			this.fs.write(projectFile, lines.join('\n'));
 		}
 	}
 };
