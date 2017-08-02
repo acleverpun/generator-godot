@@ -9,6 +9,7 @@ const yosay = require('yosay');
 module.exports = class extends Generator {
 	init() {
 		this.ctx = {};
+		this.manifest = {};
 	}
 
 	greet() {
@@ -44,7 +45,15 @@ module.exports = class extends Generator {
 	}
 
 	write(ns = 'core') {
+		this.manifest[ns] = [];
+
 		for (const file of this.staticFiles) {
+			this.manifest[ns].push(file);
+			if (ns !== 'core' && this.manifest.core.includes(file)) {
+				const content = this.fs.read(this.templatePath(ns, file));
+				this.fs.append(this.destinationPath(file), content);
+				continue;
+			}
 			this.fs.copy(
 				this.templatePath(ns, file),
 				this.destinationPath(file)
@@ -52,9 +61,16 @@ module.exports = class extends Generator {
 		}
 
 		for (const file of this.templateFiles) {
+			const fixedFile = fixTemplatePath(file);
+			this.manifest[ns].push(fixedFile);
+			if (ns !== 'core' && this.manifest.core.includes(fixedFile)) {
+				const content = this.fs.read(this.templatePath(ns, file));
+				this.fs.append(this.destinationPath(fixedFile), _.template(content)(this.ctx));
+				continue;
+			}
 			this.fs.copyTpl(
 				this.templatePath(ns, file),
-				this.destinationPath(fixTemplatePath(file)),
+				this.destinationPath(fixedFile),
 				this.ctx
 			);
 		}

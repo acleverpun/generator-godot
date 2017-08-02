@@ -1,0 +1,4 @@
+
+[autoload]
+
+NimRuntime="*res://scripts/NimRuntime.gdns"
