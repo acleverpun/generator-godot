@@ -58,6 +58,7 @@ module.exports = class extends Generator {
 				this.templatePath(ns, file),
 				this.destinationPath(file)
 			);
+			if (/\.gitkeep$/.test(file)) this.fs.delete(this.destinationPath(file));
 		}
 
 		for (const file of this.templateFiles) {
