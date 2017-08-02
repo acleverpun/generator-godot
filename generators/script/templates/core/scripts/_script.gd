@@ -1,4 +1,4 @@
-extends <%= type %>
+extends <%= parent %>
 
 func _ready():
 	pass

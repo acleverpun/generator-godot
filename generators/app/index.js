@@ -1,7 +1,6 @@
 const Yodot = require('../yodot');
 const _ = require('lodash');
 const chalk = require('chalk');
-const glob = require('glob');
 const path = require('path');
 const pkg = require('../../package.json');
 const yosay = require('yosay');
@@ -21,7 +20,7 @@ module.exports = class extends Yodot {
 			name: 'modules',
 			type: 'checkbox',
 			message: 'Modules?',
-			choices: [ 'nim' ],
+			choices: this.getModules(),
 			store: true
 		} ]);
 		_.assign(this.ctx, answers);

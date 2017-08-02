@@ -1,13 +1,13 @@
 const Generator = require('yeoman-generator');
 const _ = require('lodash');
 const glob = require('glob');
-const path = require('path');
+const shell = require('shelljs');
 
 module.exports = class extends Generator {
 	constructor(...args) {
 		super(...args);
 		this.ctx = {};
-		this.manifest = {};
+		this.manifest = { core: [] };
 	}
 
 	paths({ ns }) {
@@ -21,7 +21,7 @@ module.exports = class extends Generator {
 	}
 
 	write({ ns, mappings }) {
-		this.manifest[ns] = [];
+		if (!this.manifest[ns]) this.manifest[ns] = [];
 
 		for (const file of this.staticFiles) {
 			this.manifest[ns].push(file);
@@ -57,6 +57,12 @@ module.exports = class extends Generator {
 				this.ctx
 			);
 		}
+	}
+
+	getModules(includeCore = false) {
+		let modules = shell.ls(this.templatePath());
+		if (!includeCore) _.pull(modules, 'core');
+		return modules;
 	}
 
 	main(options = {}) {
