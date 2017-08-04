@@ -15,9 +15,11 @@ module.exports = class extends Generator {
 
 		this.allFiles = glob.sync(this.templatePath(ns, '**'), { dot: true, nodir: true })
 			.map((file) => makeRelative(file, templatePath));
-		this.templateFiles = glob.sync(this.templatePath(ns, '**/_*'), { nodir: true })
+		this.templateFiles = glob.sync(this.templatePath(ns, '**/_[^_]*'), { nodir: true })
 			.map((file) => makeRelative(file, templatePath));
-		this.staticFiles = _.difference(this.allFiles, this.templateFiles);
+		this.transformFiles = glob.sync(this.templatePath(ns, '**/__*.js?(on)'), { nodir: true })
+			.map((file) => makeRelative(file, templatePath));
+		this.staticFiles = _.difference(this.allFiles, this.templateFiles, this.transformFiles);
 	}
 
 	write({ ns, mappings }) {
@@ -57,6 +59,16 @@ module.exports = class extends Generator {
 				this.ctx
 			);
 		}
+
+		for (const file of this.transformFiles) {
+			let fixedFile = fixTemplatePath(file);
+			let transform = require(this.templatePath(ns, file));
+			if (typeof transform === 'function') transform = transform(this.ctx);
+
+			if (transform.action === 'append') {
+				this.fs.append(this.destinationPath(fixedFile), _.template(transform.body)(this.ctx));
+			}
+		}
 	}
 
 	getModules(includeCore = false) {
@@ -72,12 +84,14 @@ module.exports = class extends Generator {
 	}
 };
 
-function fixTemplatePath(file) {
-	const parts = file.split('/');
-	parts[parts.length - 1] = _.last(parts).slice(1);
+function fixTemplatePath(filePath) {
+	const parts = filePath.split('/');
+	let file = _.last(parts);
+	if (/^__/.test(file)) file = file.replace(/\.js(on)?$/, '');
+	parts[parts.length - 1] = file.replace(/^__?/, '');
 	return parts.join('/');
 }
 
-function makeRelative(file, templatePath) {
-	return file.replace(`${templatePath}/`, '');
+function makeRelative(filePath, templatePath) {
+	return filePath.replace(`${templatePath}/`, '');
 }
