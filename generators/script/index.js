@@ -6,7 +6,7 @@ module.exports = class extends Yodot {
 		const answers = await this.prompt([ {
 			name: 'name',
 			type: 'input',
-			message: 'Script name?',
+			message: 'Class name?',
 			default: 'main'
 		}, {
 			name: 'parent',

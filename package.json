@@ -45,7 +45,8 @@
     "test": "jest"
   },
   "eslintConfig": {
-    "extends": "zipscene/environments/node"
+    "extends": "zipscene/environments/node",
+    "rules": { "camelcase": 0 }
   },
   "repository": "rosshadden/generator-godot",
   "license": "MIT"
