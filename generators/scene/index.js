@@ -1,4 +1,4 @@
-const Yodot = require('../yodot');
+const Yodot = require('../../lib/yodot');
 const _ = require('lodash');
 const ini = require('ezini');
 const utils = require('../../lib/utils');
