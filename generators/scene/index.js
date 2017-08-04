@@ -33,17 +33,14 @@ module.exports = class extends Yodot {
 	}
 
 	main() {
-		const file = `scenes/${this.ctx.name}.tscn`;
-
-		super.main({
-			mappings: { 'scenes/scene.tscn': file }
-		});
+		super.main();
 
 		// Register as main scene
 		if (this.ctx.main) {
+			// TODO: don't hardcode
+			const value = `res://scenes/${this.ctx.name}.tscn`;
 			const projectFile = this.destinationPath('project.godot');
 			const key = 'run/main_scene';
-			const value = `res://${file}`;
 
 			// Add or overwrite setting
 			const body = ini.parseSync(this.fs.read(projectFile));

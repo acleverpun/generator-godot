@@ -1,6 +1,7 @@
 const Generator = require('yeoman-generator');
 const _ = require('lodash');
 const glob = require('glob');
+const path = require('path');
 const shell = require('shelljs');
 
 module.exports = class extends Generator {
@@ -45,15 +46,20 @@ module.exports = class extends Generator {
 		// Handle transform files
 		for (const file of this.transformFiles) {
 			let fixedFile = fixTemplatePath(file);
-			let destPath = this.destinationPath(fixedFile);
 			let transform = require(this.templatePath(ns, file));
 			let writeMethod = 'write';
 
 			// Handle functions, passing ctx
 			if (typeof transform === 'function') transform = transform(this.ctx);
 
+			// Set defaults
+			if (!transform.action) transform.action = 'overwrite';
+
 			// Handle renaming
-			if (transform.rename) fixedFile = transform.rename;
+			if (transform.name) {
+				fixedFile = path.join(path.dirname(fixedFile), `${transform.name}${path.extname(fixedFile)}`);
+			}
+			let destPath = this.destinationPath(fixedFile);
 
 			// Handle appinding
 			if (transform.action === 'append' && this.fs.exists(destPath)) writeMethod = 'append';

@@ -29,11 +29,6 @@ module.exports = class extends Yodot {
 		let ns = this.ctx.type;
 		if (ns === 'gd') ns = 'core';
 
-		super.main({
-			ns,
-			mappings: {
-				'scripts/script.gd': `scripts/${this.ctx.name}.gd`,
-			}
-		});
+		super.main({ ns });
 	}
 };

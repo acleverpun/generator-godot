@@ -2,9 +2,10 @@ const { stripIndent } = require('common-tags');
 
 module.exports = (ctx) => {
 	const body = stripIndent`
-		[gd_scene format=2]
+		extends ${ctx.parent}
 
-		[node name="${ctx.nodeName}" type="${ctx.nodeType}"]
+		func _ready():
+			pass
 	` + '\n';
 
 	return {
