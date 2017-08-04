@@ -7,7 +7,6 @@ module.exports = class extends Generator {
 	constructor(...args) {
 		super(...args);
 		this.ctx = {};
-		this.manifest = { core: [] };
 	}
 
 	paths({ ns }) {
@@ -23,17 +22,7 @@ module.exports = class extends Generator {
 	}
 
 	write({ ns, mappings }) {
-		if (!this.manifest[ns]) this.manifest[ns] = [];
-
 		for (const file of this.staticFiles) {
-			this.manifest[ns].push(file);
-
-			if (ns !== 'core' && this.manifest.core.includes(file)) {
-				const body = this.fs.read(this.templatePath(ns, file));
-				this.fs.append(this.destinationPath(file), body);
-				continue;
-			}
-
 			this.fs.copy(
 				this.templatePath(ns, file),
 				this.destinationPath(file)
@@ -45,13 +34,6 @@ module.exports = class extends Generator {
 		for (const file of this.templateFiles) {
 			let fixedFile = fixTemplatePath(file);
 			if (mappings && _.has(mappings, fixedFile)) fixedFile = mappings[fixedFile];
-			this.manifest[ns].push(fixedFile);
-
-			if (ns !== 'core' && this.manifest.core.includes(fixedFile)) {
-				const body = this.fs.read(this.templatePath(ns, file));
-				this.fs.append(this.destinationPath(fixedFile), _.template(body)(this.ctx));
-				continue;
-			}
 
 			this.fs.copyTpl(
 				this.templatePath(ns, file),
