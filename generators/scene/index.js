@@ -37,14 +37,12 @@ module.exports = class extends Yodot {
 
 		// Register as main scene
 		if (this.ctx.main) {
-			// TODO: don't hardcode
-			const value = `res://scenes/${this.ctx.name}.tscn`;
 			const projectFile = this.destinationPath('project.godot');
-			const key = 'run/main_scene';
 
 			// Add or overwrite setting
 			const body = ini.parseSync(this.fs.read(projectFile));
-			body.application[key] = value;
+			// TODO: don't hardcode
+			body.application['run/main_scene'] = `res://scenes/${this.ctx.name}.tscn`;
 			this.fs.write(projectFile, ini.stringifySync(utils.fixIni(body)));
 		}
 	}
