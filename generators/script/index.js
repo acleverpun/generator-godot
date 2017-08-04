@@ -7,7 +7,7 @@ module.exports = class extends Yodot {
 			name: 'name',
 			type: 'input',
 			message: 'Class name?',
-			default: 'main'
+			default: 'Main'
 		}, {
 			name: 'parent',
 			type: 'input',

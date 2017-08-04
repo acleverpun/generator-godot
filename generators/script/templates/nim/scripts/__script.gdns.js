@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 module.exports = (ctx) => {
 	const body = {
 		'gd_resource type="NativeScript" format=2': {},
@@ -8,7 +10,7 @@ module.exports = (ctx) => {
 	};
 
 	return {
-		name: ctx.name,
+		name: _.kebabCase(ctx.name),
 		type: 'ini',
 		body
 	};
