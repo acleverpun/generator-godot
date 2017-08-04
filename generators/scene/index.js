@@ -1,7 +1,7 @@
-const Yodot = require('../yodot');
+const Yodot = require('../../lib/yodot');
 const _ = require('lodash');
 const ini = require('ezini');
-const utils = require('../../utils');
+const utils = require('../../lib/utils');
 
 module.exports = class extends Yodot {
 	async ask() {
@@ -33,21 +33,16 @@ module.exports = class extends Yodot {
 	}
 
 	main() {
-		const file = `scenes/${this.ctx.name}.tscn`;
-
-		super.main({
-			mappings: { 'scenes/scene.tscn': file }
-		});
+		super.main();
 
 		// Register as main scene
 		if (this.ctx.main) {
 			const projectFile = this.destinationPath('project.godot');
-			const key = 'run/main_scene';
-			const value = `res://${file}`;
 
 			// Add or overwrite setting
 			const body = ini.parseSync(this.fs.read(projectFile));
-			body.application[key] = value;
+			// TODO: don't hardcode
+			body.application['run/main_scene'] = `res://scenes/${this.ctx.name}.tscn`;
 			this.fs.write(projectFile, ini.stringifySync(utils.fixIni(body)));
 		}
 	}

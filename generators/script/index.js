@@ -1,4 +1,4 @@
-const Yodot = require('../yodot');
+const Yodot = require('../../lib/yodot');
 const _ = require('lodash');
 
 module.exports = class extends Yodot {
@@ -29,13 +29,6 @@ module.exports = class extends Yodot {
 		let ns = this.ctx.type;
 		if (ns === 'gd') ns = 'core';
 
-		super.main({
-			ns,
-			mappings: {
-				'scripts/script.gd': `scripts/${this.ctx.name}.gd`,
-				'scripts/script.gdns': `scripts/${this.ctx.name}.gdns`,
-				'src/script.nim': `src/${this.ctx.name}.nim`
-			}
-		});
+		super.main({ ns });
 	}
 };
