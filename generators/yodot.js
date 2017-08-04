@@ -45,16 +45,21 @@ module.exports = class extends Generator {
 		// Handle transform files
 		for (const file of this.transformFiles) {
 			let fixedFile = fixTemplatePath(file);
+			let destPath = this.destinationPath(fixedFile);
 			let transform = require(this.templatePath(ns, file));
+			let writeMethod = 'write';
+
+			// Handle functions, passing ctx
 			if (typeof transform === 'function') transform = transform(this.ctx);
 
+			// Handle renaming
 			if (transform.rename) fixedFile = transform.rename;
 
-			if (transform.action === 'append') {
-				let destPath = this.destinationPath(fixedFile);
-				let writeMethod = (this.fs.exists(destPath)) ? 'append' : 'write';
-				this.fs[writeMethod](destPath, transform.body);
-			}
+			// Handle appinding
+			if (transform.action === 'append' && this.fs.exists(destPath)) writeMethod = 'append';
+
+			// Write file
+			this.fs[writeMethod](destPath, transform.body);
 		}
 	}
 

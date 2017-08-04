@@ -1,7 +1,7 @@
 const Yodot = require('../yodot');
 const _ = require('lodash');
 const ini = require('ezini');
-const utils = require('../../utils');
+const utils = require('../../lib/utils');
 
 module.exports = class extends Yodot {
 	async ask() {
