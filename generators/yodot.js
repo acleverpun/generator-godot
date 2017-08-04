@@ -22,15 +22,15 @@ module.exports = class extends Generator {
 	}
 
 	write({ ns, mappings }) {
+		// Handle static files
 		for (const file of this.staticFiles) {
 			this.fs.copy(
 				this.templatePath(ns, file),
 				this.destinationPath(file)
 			);
-
-			if (/\.gitkeep$/.test(file)) this.fs.delete(this.destinationPath(file));
 		}
 
+		// Handle template files
 		for (const file of this.templateFiles) {
 			let fixedFile = fixTemplatePath(file);
 			if (mappings && _.has(mappings, fixedFile)) fixedFile = mappings[fixedFile];
@@ -42,13 +42,18 @@ module.exports = class extends Generator {
 			);
 		}
 
+		// Handle transform files
 		for (const file of this.transformFiles) {
 			let fixedFile = fixTemplatePath(file);
 			let transform = require(this.templatePath(ns, file));
 			if (typeof transform === 'function') transform = transform(this.ctx);
 
+			if (transform.rename) fixedFile = transform.rename;
+
 			if (transform.action === 'append') {
-				this.fs.append(this.destinationPath(fixedFile), _.template(transform.body)(this.ctx));
+				let destPath = this.destinationPath(fixedFile);
+				let writeMethod = (this.fs.exists(destPath)) ? 'append' : 'write';
+				this.fs[writeMethod](destPath, transform.body);
 			}
 		}
 	}
