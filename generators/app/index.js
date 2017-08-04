@@ -1,4 +1,4 @@
-const Yodot = require('../yodot');
+const Yodot = require('../../lib/yodot');
 const _ = require('lodash');
 const chalk = require('chalk');
 const path = require('path');

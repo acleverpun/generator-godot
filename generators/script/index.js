@@ -3,8 +3,6 @@ const _ = require('lodash');
 
 module.exports = class extends Yodot {
 	async ask() {
-		const modules = [ 'gd', ...this.getModules() ];
-
 		const answers = await this.prompt([ {
 			name: 'name',
 			type: 'input',
@@ -19,7 +17,7 @@ module.exports = class extends Yodot {
 			name: 'type',
 			type: 'list',
 			message: 'Type of script?',
-			choices: modules,
+			choices: this.getModules(),
 			default: 'gd'
 		} ]);
 		_.assign(this.ctx, answers);
@@ -27,7 +25,6 @@ module.exports = class extends Yodot {
 
 	main() {
 		let ns = this.ctx.type;
-		if (ns === 'gd') ns = 'core';
 
 		super.main({ ns });
 	}
