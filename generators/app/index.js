@@ -17,6 +17,11 @@ module.exports = class extends Yodot {
 			message: 'Project name?',
 			default: path.basename(process.cwd())
 		}, {
+			name: 'author',
+			type: 'input',
+			message: 'Author?',
+			store: true
+		}, {
 			name: 'modules',
 			type: 'checkbox',
 			message: 'Modules?',
