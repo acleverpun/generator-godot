@@ -29,6 +29,8 @@ module.exports = class extends Yodot {
 			store: true
 		} ]);
 		_.assign(this.ctx, answers);
+
+		this.config.set('name', answers.name);
 	}
 
 	main() {

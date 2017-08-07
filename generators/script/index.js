@@ -18,7 +18,8 @@ module.exports = class extends Yodot {
 			type: 'list',
 			message: 'Type of script?',
 			choices: this.getModules(),
-			default: 'gd'
+			default: 'gd',
+			store: true
 		} ]);
 		_.assign(this.ctx, answers);
 	}
