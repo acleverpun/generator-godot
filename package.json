@@ -46,7 +46,9 @@
   },
   "eslintConfig": {
     "extends": "zipscene/environments/node",
-    "rules": { "camelcase": 0 }
+    "rules": {
+      "camelcase": 0
+    }
   },
   "repository": "rosshadden/generator-godot",
   "license": "MIT"
