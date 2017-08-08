@@ -678,7 +678,7 @@ dateformat@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-2.0.0.tgz#2743e3abb5c3fc2462e527dca445e04e9f4dee17"
 
-debug@2, debug@^2.0.0, debug@^2.1.0, debug@^2.1.1, debug@^2.1.3, debug@^2.2.0, debug@^2.6.3, debug@^2.6.8:
+debug@2, debug@^2.0.0, debug@^2.1.0, debug@^2.1.1, debug@^2.1.3, debug@^2.2.0, debug@^2.6.3, debug@^2.6.7, debug@^2.6.8:
   version "2.6.8"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
   dependencies:
@@ -1083,9 +1083,9 @@ extsprintf@1.3.0, extsprintf@^1.2.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.3.0.tgz#96918440e3041a7a414f8c52e3c574eb3c3e1e05"
 
-ezini@^1.2.2:
+ezini@rosshadden/ezini#dev:
   version "1.2.2"
-  resolved "https://registry.yarnpkg.com/ezini/-/ezini-1.2.2.tgz#4fc0c78f6f0bc701fee47a388d736f0eab78e9e3"
+  resolved "https://codeload.github.com/rosshadden/ezini/tar.gz/1a30b4513d9f9df7b95b09d273f6b3bbf0bcec9b"
 
 fast-deep-equal@^1.0.0:
   version "1.0.0"
@@ -3132,6 +3132,12 @@ shellwords@^0.1.0:
 signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
+
+simple-git@^1.75.0:
+  version "1.75.0"
+  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-1.75.0.tgz#eaddc90118b40a1dca3837d51c50ac064ee1d288"
+  dependencies:
+    debug "^2.6.7"
 
 sinon@^2.3.6:
   version "2.4.1"

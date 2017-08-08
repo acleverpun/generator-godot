@@ -1,9 +1,12 @@
 const Yodot = require('../../lib/yodot');
 const _ = require('lodash');
 const chalk = require('chalk');
+const Git = require('simple-git/promise');
 const path = require('path');
 const pkg = require('../../package.json');
 const yosay = require('yosay');
+
+const git = new Git();
 
 module.exports = class extends Yodot {
 	greet() {
@@ -20,6 +23,7 @@ module.exports = class extends Yodot {
 			name: 'author',
 			type: 'input',
 			message: 'Author?',
+			default: await getGitUser(),
 			store: true
 		}, {
 			name: 'modules',
@@ -38,3 +42,8 @@ module.exports = class extends Yodot {
 		for (const module of this.ctx.modules) super.main({ ns: module });
 	}
 };
+
+async function getGitUser() {
+	return git.raw('config --get user.name'.split(' '))
+		.then((result) => result.trim());
+}

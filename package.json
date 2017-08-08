@@ -33,6 +33,7 @@
     "glob": "^7.1.2",
     "lodash": "^4.17.4",
     "shelljs": "^0.7.8",
+    "simple-git": "^1.75.0",
     "yeoman-generator": "^1.0.0",
     "yosay": "^2.0.0"
   },
