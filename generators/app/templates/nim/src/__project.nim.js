@@ -5,7 +5,7 @@ module.exports = (ctx) => {
 	const body = stripIndent`
     when not defined(release):
       import segfaults # converts segfaults into NilAccessError
-	` + '\n';
+	` + '\n\n';
 
 	return {
 		name: _.kebabCase(ctx.name),

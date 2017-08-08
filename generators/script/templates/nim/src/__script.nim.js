@@ -11,7 +11,7 @@ module.exports = (ctx, generator) => {
         print("${ctx.name}")
 	` + '\n';
 
-	const importBody = `\nimport ${ctx.name}`;
+	const importBody = `import ${ctx.name}`;
 
 	const runtimeFile = `src/${generator.config.get('name')}.nim`;
 	generator.fs.append(generator.destinationPath(runtimeFile), importBody);
