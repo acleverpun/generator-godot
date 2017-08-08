@@ -7,6 +7,10 @@ module.exports = (ctx) => {
 		},
 		rendering: {
 			'environment/default_environment': '"res://default_env.tres"'
+		},
+		node: {
+			name_num_separator: 3,
+			name_casing: 1
 		}
 	};
 
