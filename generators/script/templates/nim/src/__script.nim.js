@@ -9,7 +9,7 @@ module.exports = (ctx, generator) => {
     gdobj ${ctx.name} of ${ctx.parent}:
       method ready*() =
         print("${ctx.name}")
-	`;
+	` + '\n';
 
 	const importBody = `\nimport ${ctx.name}`;
 
