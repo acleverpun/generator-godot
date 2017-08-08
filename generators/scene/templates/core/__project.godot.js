@@ -12,4 +12,3 @@ module.exports = (ctx) => {
 		body
 	};
 };
-
