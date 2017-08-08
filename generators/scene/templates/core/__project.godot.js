@@ -3,7 +3,7 @@ module.exports = (ctx) => {
 
 	const body = {
 		application: {
-			'run/main_scene': `res://scenes/${ctx.name}.tscn`
+			'run/main_scene': `"res://scenes/${ctx.name}.tscn"`
 		}
 	};
 

@@ -1,12 +1,13 @@
 const _ = require('lodash');
 
-module.exports = (ctx) => {
+module.exports = (ctx, generator) => {
 	const body = {
 		'gd_resource type="NativeScript" load_steps=2 format=2': {},
 		'ext_resource path="res://nimlib.tres" type="GDNativeLibrary" id=1': {},
 		resource: {
-			resource_name: ctx.name,
-			class_name: ctx.name
+			resource_name: `"${ctx.name}"`,
+			class_name: `"${ctx.name}"`,
+			library: 'ExtResource( 1 )'
 		}
 	};
 
