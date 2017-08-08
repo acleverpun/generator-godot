@@ -43,7 +43,7 @@ module.exports = class extends Yodot {
 	}
 };
 
-async function getGitUser() {
+function getGitUser() {
 	return git.raw('config --get user.name'.split(' '))
 		.then((result) => result.trim());
 }
