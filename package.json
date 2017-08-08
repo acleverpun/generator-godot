@@ -29,7 +29,7 @@
   "dependencies": {
     "chalk": "^1.1.3",
     "common-tags": "^1.4.0",
-    "ezini": "^1.2.2",
+    "ezini": "rosshadden/ezini#dev",
     "glob": "^7.1.2",
     "lodash": "^4.17.4",
     "shelljs": "^0.7.8",
