@@ -3,8 +3,7 @@ const { stripIndent } = require('common-tags');
 
 module.exports = (ctx, generator) => {
 	const body = stripIndent`
-    import godot
-    import node
+    import godot, node
 
     gdobj ${ctx.name} of ${ctx.parent}:
       method ready*() =
